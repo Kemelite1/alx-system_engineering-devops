@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Displays all acive IPv4 addresses.
+
+#  ifconfig command to get network interface information
+#  grep with a regular expression to extract IPv4 addresses from the output
+#   cut to remove the leading "inet " characters, resulting in a clean list of active IPv4 addresses.
+ifconfig | grep -Eo "inet (addr:)?([0-9]*\.){3}[0-9]*" | cut -b 11-
