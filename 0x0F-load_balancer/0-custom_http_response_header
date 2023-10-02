@@ -1,5 +1,52 @@
 #!/usr/bin/env bash
 # Install Nginx with these configurations:
-# listens on port 80,
-# when querying Nginx at its root with a curl GET request,
-#  must return a page containing 'Hello World!'
+#+ configure Nginx to be identical on web-01 and web-02,
+#+ Adds a custom HTTP response header named X-Served-By,
+#+ Sets the value of X-Served-By to the hostname of the server,
+#+ listens on port 80,
+#+ when querying Nginx at its root with a curl GET request,
+#+  must return a page containing 'Hello World!',
+#+ configures /redirect_me as a '301 Moved Permanently',
+#+ contains a custom 404 page with "Ceci n'est pas une page"
+
+# update package and install the Nginx server
+sudo apt-get update
+sudo apt-get install -y nginx
+
+# create a directory structure under /var/www/html and populate it with
+#+ index.html: contains 'Hello World'and will be the default page served by Nginx.
+#+ 404.html: contains "Ceci n'est pas une page" and will be used as a custom 404 error page.
+mkdir -p /var/www/html
+touch /var/www/html/index.html
+echo 'Hello World!' > /var/www/html/index.html
+touch /var/www/html/404.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
+# uses printf command to write an Nginx server block configuration to the /etc/nginx/sites-available/default file.
+#+ listen: Configures Nginx to listen on port 80 for HTTP traffic
+#+ add_header X-Served-By \$HOSTNAME: Adds a custome HTTP header with the value set to the hostname of the running server.
+#+ root: Specifies the root directory for serving web content as /var/www/html.
+#+ location /redirect_me: Configures a URL location /redirect_me that returns a "301 Moved Permanently" redirect to http://techcrunch.com
+#+ error_page 404 /404.html;: Defines a custom error page for HTTP 404 errors.
+#+ location /404 { ... }: Configures the location for the custom error page
+#+ service nginx restart: restarts the Nginx service to apply the new configuration
+
+printf %s "server {
+    listen 80 default_server; 
+    listen [::]:80 default_server;
+    add_header X-Served-By $HOSTNAME;
+    root   /var/www/html;
+    index  index.html index.htm;
+
+    location /redirect_me {
+        return 301 http://techcrunch.com/;
+    }
+
+    error_page 404 /404.html;
+    location /404 {
+      root /var/www/html;
+      internal;
+    }
+}" > /etc/nginx/sites-available/default
+
+service nginx restart
