@@ -16,7 +16,7 @@ sudo apt-get install -y nginx
 # create a directory structure under /var/www/html and populate it with
 #+ index.html: contains 'Hello World'and will be the default page served by Nginx.
 #+ 404.html: contains "Ceci n'est pas une page" and will be used as a custom 404 error page.
-mkdir -p /var/www/html
+sudo mkdir -p /var/www/html
 touch /var/www/html/index.html
 echo 'Hello World!' > /var/www/html/index.html
 touch /var/www/html/404.html
@@ -49,4 +49,4 @@ printf %s "server {
     }
 }" > /etc/nginx/sites-available/default
 
-service nginx restart
+sudo service nginx restart
