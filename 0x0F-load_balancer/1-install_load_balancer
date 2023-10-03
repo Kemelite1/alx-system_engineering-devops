@@ -5,10 +5,12 @@
 #+ Make sure that HAproxy can be managed via an init script
 
 # update system packages and install HAProxy
+sudo apt-get install -y software-properties-common
+sudo apt-get repository -y ppa:vbernat/haproxy-2.8
 sudo apt-get -y update
 sudo apt-get -y install haproxy
 
-load_balancer="\
+load_balancer="
 frontend kemeosi.tech
     bind *:80
     mode http
