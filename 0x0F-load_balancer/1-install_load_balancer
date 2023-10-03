@@ -9,12 +9,12 @@ sudo apt-get -y update
 sudo apt-get -y install haproxy
 
 load_balancer="\
-frontend techsavvy-frontend
+frontend kemeosi.tech
     bind *:80
     mode http
-    default_backend techsavvy-backend
+    default_backend webservers
     
-backend techsavvy-backend
+backend webservers
     balance roundrobin
     server 303296-web-01 52.201.69.229:80 check
     server 303296-web-02 54.152.232.249:80 check
