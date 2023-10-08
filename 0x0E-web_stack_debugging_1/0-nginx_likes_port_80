@@ -3,7 +3,7 @@
 # cd into sites-enabled for nginx
 cd /etc/nginx/sites-enabled/ || exit;
 # delete default file
-rm -r Default;
+rm -r default;
 # create a symbolic link to the default file in sites-available
 ln -s /etc/nginx/sites-available/default default;
 # restart nginx
