@@ -40,5 +40,5 @@ frontend kemeosi.tech
 backend webservers
         balance roundrobin
         server web-01 52.201.69.229:80 check
-        server web-02 54.152.232.249:80 check
+        server web-02 54.160.83.247:80 check
 
