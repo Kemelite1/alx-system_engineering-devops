@@ -33,15 +33,10 @@ defaults
 
 frontend kemeosi.tech
         bind *:80
-        mode http
-        http-request set-header X-Forwarded-Proto http
-        default_backend webservers
-
-frontend kemeosi.tech
         bind *:443 ssl crt /etc/haproxy/certs/www.kemeosi.tech.pem
-        http-request set-header X-Forwarded-Proto https
         redirect scheme https code 301 if !{ ssl_fc }
         default_backend webservers
+
 backend webservers
         balance roundrobin
         server web-01 52.201.69.229:80 check
