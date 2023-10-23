@@ -2,7 +2,7 @@
 """extend your Python script to export data in the CSV format."""
 import csv
 import requests
-import sys
+from sys import argv
 
 
 if __name__ == "__main__":
