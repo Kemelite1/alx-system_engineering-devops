@@ -1,32 +1,28 @@
+#!/usr/bin/python3
+"""A function that queries the
+Reddit API and prints the titles of the first
+10 hot posts listed for a given subreddit."""
+
 import requests
 
 def top_ten(subreddit):
-    # Define the Reddit API URL for the given subreddit
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=10"
-
-    # Set a custom User-Agent to avoid too many requests error
-    headers = {"User-Agent": "MyBot/1.0"}
-
-    # Send a GET request to the API
-    response = requests.get(url, headers=headers)
-
-    # Check if the response is successful (status code 200)
-    if response.status_code == 200:
-        # Parse the JSON response
-        data = response.json()
-
-        # Extract and print the titles of the first 10 hot posts
-        for i, post in enumerate(data['data']['children'][:10], start=1):
-            print(f"{i}. {post['data']['title']}")
-    else:
-        # Print None for invalid or non-existent subreddits
+    """Write a function that queries the Reddit API and prints the titles of
+    the first 10 hot posts listed for a given subreddit."""
+    response = requests.get(
+        "https://www.reddit.com/r/{}/hot.json".format(subreddit),
+        headers={
+            "User-Agent": "subscribercheck",
+        },
+        params={"limit": "10"},
+        allow_redirects=False,
+    )
+    if response.status_code != 200:
         print(None)
+        return
+    resp = response.json()["data"]["children"]
+    for i in resp:
+        print(i["data"]["title"])
 
-if __name__ == '__main__':
-    import sys
-
-    if len(sys.argv) < 2:
-        print("Please pass an argument for the subreddit to search.")
-    else:
-        subreddit = sys.argv[1]
-        top_ten(subreddit)
+if __name__ == "__main__":
+    subreddit = "programming"  # Replace with the subreddit you want to check
+    top_ten(subreddit)
