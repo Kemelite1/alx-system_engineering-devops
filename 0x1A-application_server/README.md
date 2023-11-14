@@ -1,0 +1,2 @@
+# Application server
+This task involved deployment of the AirBnB clone project. I was tasked with configuring Nginx on my web server provided by ALX to serve a WSGI(Web Server Gateway Interface)Flask app running through Gunicorn. 
